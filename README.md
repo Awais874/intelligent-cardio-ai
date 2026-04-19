@@ -5,7 +5,7 @@ It analyzes clinical health indicators and provides a clear, structured estimate
 
 ---
 
-## 🚀 What this project does
+##  What this project does
 
 This project transforms raw clinical data into meaningful insights.
 
@@ -53,7 +53,7 @@ Instead of just returning numbers, it:
 
 During development, multiple machine learning approaches were explored to identify an effective method for predicting heart disease risk.
 
-### 🧪 Experimentation Approach
+###  Experimentation Approach
 
 Different approaches were evaluated to understand how well they capture patterns in clinical data such as:
 
@@ -103,7 +103,7 @@ The goal was to balance:
 
 ---
 
-## ⚙️ Getting Started
+##  Getting Started
 
 ### 1️⃣ Clone the repository
 
