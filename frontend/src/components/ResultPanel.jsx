@@ -1,5 +1,5 @@
 import { HeartPulse, ShieldCheck } from "lucide-react";
-import KeyConcerns from "./KeyConcerns";
+import KeyConcerns from "./keyConcerns";
 
 export default function ResultPanel({ result, formData }) {
   const riskStyles =
