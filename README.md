@@ -1,9 +1,28 @@
-# 🫀 IntelligentCardio AI
+#  IntelligentCardio AI
 
 An AI-powered cardiovascular risk prediction system that combines a modern **React (Vite)** frontend with a **FastAPI** backend.  
 It analyzes clinical health indicators and provides a clear, structured estimate of heart disease risk.
 
 ---
+## Tech Stack
+
+###  Frontend
+- React (Vite)
+- Tailwind CSS
+- Axios
+- Lucide Icons
+
+###  Backend
+- FastAPI
+- NumPy
+- Scikit-learn
+- Joblib
+
+###  Machine Learning
+- Machine learning-based classification approach
+- Feature scaling using StandardScaler
+- Trained on clinical health indicators
+
 
 ##  What this project does
 
@@ -28,28 +47,10 @@ Instead of just returning numbers, it:
 
 ---
 
-## Tech Stack
-
-###  Frontend
-- React (Vite)
-- Tailwind CSS
-- Axios
-- Lucide Icons
-
-###  Backend
-- FastAPI
-- NumPy
-- Scikit-learn
-- Joblib
-
-###  Machine Learning
-- Machine learning-based classification approach
-- Feature scaling using StandardScaler
-- Trained on clinical health indicators
 
 ---
 
-## 🔬 Model Experiments & Selection
+##  Model Experiments & Selection
 
 During development, multiple machine learning approaches were explored to identify an effective method for predicting heart disease risk.
 
@@ -82,7 +83,7 @@ The goal was to balance:
 
 ---
 
-## 📂 Project Structure
+##  Project Structure
 ├── frontend/ # React UI
 │ ├── src/
 │ └── package.json
