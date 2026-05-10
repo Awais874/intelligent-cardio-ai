@@ -1,4 +1,4 @@
-#  IntelligentCardio AI
+#  IntelligentCardio AI  (FullStack ML Based App)
 
 An AI-powered cardiovascular risk prediction system that combines a modern **React (Vite)** frontend with a **FastAPI** backend.  
 It analyzes clinical health indicators and provides a clear, structured estimate of heart disease risk.
