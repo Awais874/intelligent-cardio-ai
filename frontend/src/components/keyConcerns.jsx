@@ -23,8 +23,11 @@ function getMetricStatus(type, value) {
   }
 }
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 428d4597c850bfc36abbcbdcecd7fd698cb418b0
 function getColor(label) {
   if (
     label.includes("Normal") ||
@@ -59,9 +62,12 @@ function ConcernCard({ title, value, unit, type, min, max }) {
         </div>
       </div>
 
+<<<<<<< HEAD
 
       
 
+=======
+>>>>>>> 428d4597c850bfc36abbcbdcecd7fd698cb418b0
       <div className="mt-4">
         <div className="flex flex-wrap items-end gap-1">
           <span className="text-2xl font-bold text-slate-900">{value}</span>
