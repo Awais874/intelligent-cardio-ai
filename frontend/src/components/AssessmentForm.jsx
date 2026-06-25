@@ -61,11 +61,11 @@ export default function AssessmentForm({ setResult, setSubmittedData }) {
   };
 
   return (
-    <div className="rounded-[28px] bg-white p-8 shadow-xl ring-1 ring-blue-100">
+    <div className="rounded-[28px] bg-white p-8 shadow-xl ring-1 ring-sky-100">
       {/* Header */}
       <div className="flex items-center gap-3">
-        <div className="rounded-2xl bg-blue-100 p-3">
-          <HeartPulse className="h-6 w-6 text-blue-600" />
+        <div className="rounded-2xl bg-sky-100 p-3">
+          <HeartPulse className="h-6 w-6 text-sky-600" />
         </div>
         <div>
           <h2 className="text-3xl font-bold text-slate-900">
@@ -79,9 +79,9 @@ export default function AssessmentForm({ setResult, setSubmittedData }) {
 
       {/* Info Cards */}
       <div className="mt-8 grid gap-4 md:grid-cols-3">
-        <div className="rounded-2xl border border-blue-100 bg-blue-50 p-4">
+        <div className="rounded-2xl border border-sky-100 bg-sky-50 p-4">
           <div className="flex items-center gap-2">
-            <Activity className="h-4 w-4 text-blue-500" />
+            <Activity className="h-4 w-4 text-sky-500" />
             <p className="text-sm font-medium text-slate-700">Clinical Inputs</p>
           </div>
           <p className="mt-2 text-sm text-slate-500">
@@ -89,9 +89,9 @@ export default function AssessmentForm({ setResult, setSubmittedData }) {
           </p>
         </div>
 
-        <div className="rounded-2xl border border-blue-100 bg-blue-50 p-4">
+        <div className="rounded-2xl border border-sky-100 bg-sky-50 p-4">
           <div className="flex items-center gap-2">
-            <Stethoscope className="h-4 w-4 text-blue-500" />
+            <Stethoscope className="h-4 w-4 text-sky-500" />
             <p className="text-sm font-medium text-slate-700">Screening Tool</p>
           </div>
           <p className="mt-2 text-sm text-slate-500">
@@ -99,9 +99,9 @@ export default function AssessmentForm({ setResult, setSubmittedData }) {
           </p>
         </div>
 
-        <div className="rounded-2xl border border-blue-100 bg-blue-50 p-4">
+        <div className="rounded-2xl border border-sky-100 bg-sky-50 p-4">
           <div className="flex items-center gap-2">
-            <ShieldAlert className="h-4 w-4 text-blue-500" />
+            <ShieldAlert className="h-4 w-4 text-sky-500" />
             <p className="text-sm font-medium text-slate-700">Not Diagnosis</p>
           </div>
           <p className="mt-2 text-sm text-slate-500">
@@ -117,9 +117,9 @@ export default function AssessmentForm({ setResult, setSubmittedData }) {
           <span>Step {step} of 3</span>
         </div>
 
-        <div className="h-2 w-full overflow-hidden rounded-full bg-blue-100">
+        <div className="h-2 w-full overflow-hidden rounded-full bg-sky-100">
           <div
-            className="h-full rounded-full bg-blue-600 transition-all duration-300"
+            className="h-full rounded-full bg-sky-500 transition-all duration-300"
             style={{ width: `${(step / 3) * 100}%` }}
           />
         </div>
@@ -130,7 +130,7 @@ export default function AssessmentForm({ setResult, setSubmittedData }) {
               key={label}
               className={`rounded-xl p-3 font-medium transition-colors ${
                 step >= i + 1
-                  ? "bg-blue-600 text-white shadow-sm"
+                  ? "bg-sky-600 text-white shadow-sm"
                   : "bg-slate-100 text-slate-400"
               }`}
             >
@@ -151,7 +151,7 @@ export default function AssessmentForm({ setResult, setSubmittedData }) {
             type="button"
             onClick={handlePrev}
             disabled={step === 1}
-            className="inline-flex items-center justify-center gap-2 rounded-2xl border border-blue-200 bg-white px-5 py-3 font-medium text-blue-700 transition hover:bg-blue-50 disabled:cursor-not-allowed disabled:opacity-40"
+            className="inline-flex items-center justify-center gap-2 rounded-2xl border border-sky-200 bg-white px-5 py-3 font-medium text-sky-700 transition hover:bg-sky-50 disabled:cursor-not-allowed disabled:opacity-40"
           >
             <ChevronLeft className="h-4 w-4" />
             Previous
@@ -161,7 +161,7 @@ export default function AssessmentForm({ setResult, setSubmittedData }) {
             <button
               type="button"
               onClick={handleNext}
-              className="inline-flex items-center justify-center gap-2 rounded-2xl bg-blue-600 px-5 py-3 font-semibold text-white shadow-md transition hover:bg-blue-700"
+              className="inline-flex items-center justify-center gap-2 rounded-2xl bg-sky-500 px-5 py-3 font-semibold text-white shadow-md transition hover:bg-sky-600"
             >
               Next
               <ChevronRight className="h-4 w-4" />
@@ -170,7 +170,7 @@ export default function AssessmentForm({ setResult, setSubmittedData }) {
             <button
               type="submit"
               disabled={loading}
-              className="inline-flex items-center justify-center gap-2 rounded-2xl bg-blue-600 px-6 py-3 font-semibold text-white shadow-md transition hover:bg-blue-700 disabled:opacity-60"
+              className="inline-flex items-center justify-center gap-2 rounded-2xl bg-sky-500 px-6 py-3 font-semibold text-white shadow-md transition hover:bg-sky-600 disabled:opacity-60"
             >
               {loading ? "Analyzing..." : "Generate Screening Result"}
             </button>

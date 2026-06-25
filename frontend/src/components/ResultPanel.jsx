@@ -30,13 +30,13 @@ export default function ResultPanel({ result, formData }) {
   return (
     <aside className="space-y-6">
       
-      <div className="relative overflow-hidden rounded-[28px] bg-gradient-to-br from-blue-600 to-blue-800 p-8 text-white shadow-xl">
-        
-        <div className="pointer-events-none absolute -right-6 -top-6 opacity-10">
+      <div className="relative overflow-hidden rounded-[28px] bg-linear-to-br from-teal-600 via-cyan-600 to-blue-700 p-8 text-white shadow-xl">
+
+        <div className="pointer-events-none absolute -right-6 -top-6 opacity-20">
           <HeartPulse className="h-40 w-40 text-white" />
         </div>
 
-        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-200">
+        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-teal-100">
           AI-Powered Health Intelligence
         </p>
 
@@ -44,7 +44,7 @@ export default function ResultPanel({ result, formData }) {
           Intelligent Heart Risk Prediction
         </h3>
 
-        <p className="mt-4 leading-7 text-blue-100">
+        <p className="mt-4 leading-7 text-cyan-50">
           This system uses machine learning to analyze patient data and estimate
           heart disease risk, helping identify potential concerns early. It turns
           clinical indicators into clear, structured insights for smarter
@@ -57,11 +57,11 @@ export default function ResultPanel({ result, formData }) {
 
       
       {result ? (
-        <div className="rounded-[28px] bg-white p-8 shadow-xl ring-1 ring-blue-100">
+        <div className="rounded-[28px] bg-white p-8 shadow-xl ring-1 ring-indigo-100">
           <div className="flex items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <div className="rounded-2xl bg-blue-100 p-2">
-                <HeartPulse className="h-5 w-5 text-blue-600" />
+              <div className="rounded-2xl bg-indigo-100 p-2">
+                <HeartPulse className="h-5 w-5 text-indigo-600" />
               </div>
               <h3 className="text-2xl font-bold text-slate-900">Result</h3>
             </div>
@@ -92,7 +92,7 @@ export default function ResultPanel({ result, formData }) {
 
             <div className="rounded-2xl bg-slate-50 p-5">
               <div className="flex items-center gap-2">
-                <ShieldCheck className="h-4 w-4 text-blue-500" />
+                <ShieldCheck className="h-4 w-4 text-indigo-500" />
                 <p className="text-sm text-slate-500">Clinical Note</p>
               </div>
               <p className="mt-2 leading-7 text-slate-700">{result.message}</p>
@@ -102,7 +102,7 @@ export default function ResultPanel({ result, formData }) {
           <KeyConcerns formData={formData} />
         </div>
       ) : (
-        <div className="rounded-[28px] bg-white p-8 shadow-xl ring-1 ring-blue-100">
+        <div className="rounded-[28px] bg-white p-8 shadow-xl ring-1 ring-indigo-100">
           <h3 className="text-2xl font-bold text-slate-900">Result Panel</h3>
           <p className="mt-3 text-slate-500">
             Submit the assessment form to view estimated risk, category, and
@@ -110,14 +110,14 @@ export default function ResultPanel({ result, formData }) {
           </p>
 
           <div className="mt-6 space-y-4">
-            <div className="rounded-2xl bg-blue-50 p-5">
+            <div className="rounded-2xl bg-indigo-50 p-5">
               <p className="text-sm text-slate-500">Estimated Risk</p>
-              <h4 className="mt-2 text-3xl font-bold text-blue-300">--%</h4>
+              <h4 className="mt-2 text-3xl font-bold text-indigo-300">--%</h4>
             </div>
 
-            <div className="rounded-2xl bg-blue-50 p-5">
+            <div className="rounded-2xl bg-indigo-50 p-5">
               <p className="text-sm text-slate-500">Risk Level</p>
-              <h4 className="mt-2 text-2xl font-bold text-blue-300">Waiting</h4>
+              <h4 className="mt-2 text-2xl font-bold text-indigo-300">Waiting</h4>
             </div>
           </div>
         </div>
