@@ -1,11 +1,11 @@
-# CardioSense (Front End + Backend + Machine learning)
-Live Link: https://intelligent-cardio-ai.vercel.app/
+# CardioSense-AI
+
 
 **CardioSense is an end-to-end machine learning cardiovascular risk screening application that I built from data preparation and model training to API development, frontend integration, testing, and deployment.**
 
 It uses **253,680 CDC BRFSS survey responses** and 21 health and lifestyle indicators to estimate cardiovascular risk. I compared Logistic Regression and Random Forest models, selected Logistic Regression based on cross-validation performance, and exposed the trained model through a FastAPI backend with a React frontend.
 
-> **Note:** CardioSense is a screening tool, not a diagnostic system. It uses self-reported survey data and does not use ECG or laboratory results.
+>
 
 ## Tech Stack
 
@@ -13,6 +13,8 @@ It uses **253,680 CDC BRFSS survey responses** and 21 health and lifestyle indic
 * **Backend:** FastAPI, scikit-learn, pandas, joblib
 * **Testing:** pytest, httpx
 * **Deployment:** Vercel, Render
+
+Live Link: https://intelligent-cardio-ai.vercel.app/
 
 ## ML Performance
 
