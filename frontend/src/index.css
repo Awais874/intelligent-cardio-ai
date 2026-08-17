@@ -35,7 +35,7 @@
 body {
   margin: 0;
   font-family: var(--font-sans);
-  background: var(--color-paper);
+  background: #b1c3e0;
   color: var(--color-ink-900);
   -webkit-font-smoothing: antialiased;
 }

@@ -8,7 +8,7 @@ export default function App() {
   const [result, setResult] = useState(null);
 
   return (
-    <div className="flex min-h-screen flex-col bg-paper">
+    <div className="flex min-h-screen flex-col bg-[#b1c3e0]">
       <Header />
 
       <main className="mx-auto w-full max-w-6xl flex-1 px-6 py-10">
