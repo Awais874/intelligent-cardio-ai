@@ -1,0 +1,145 @@
+{
+  "model": "logistic_regression",
+  "feature_order": [
+    "HighBP",
+    "HighChol",
+    "CholCheck",
+    "BMI",
+    "Smoker",
+    "Stroke",
+    "Diabetes",
+    "PhysActivity",
+    "Fruits",
+    "Veggies",
+    "HvyAlcoholConsump",
+    "AnyHealthcare",
+    "NoDocbcCost",
+    "GenHlth",
+    "MentHlth",
+    "PhysHlth",
+    "DiffWalk",
+    "Sex",
+    "Age",
+    "Education",
+    "Income"
+  ],
+  "dataset": {
+    "source": "BRFSS 2015 (Kaggle: alexteboul/heart-disease-health-indicators-dataset)",
+    "total_rows": 253680,
+    "duplicate_rows_kept": 23899,
+    "train_rows_before_balancing": 202944,
+    "train_rows_after_balancing": 38228,
+    "test_rows": 50736
+  },
+  "cross_validation": {
+    "folds": 5,
+    "scoring": "roc_auc",
+    "logistic_regression_mean": 0.8474,
+    "logistic_regression_std": 0.0043,
+    "random_forest_mean": 0.8469,
+    "random_forest_std": 0.003
+  },
+  "held_out_test_set": {
+    "accuracy": 0.7532,
+    "precision": 0.2479,
+    "recall": 0.7966,
+    "f1": 0.3782,
+    "roc_auc": 0.8468,
+    "confusion_matrix": [
+      [
+        34409,
+        11548
+      ],
+      [
+        972,
+        3807
+      ]
+    ]
+  },
+  "feature_importance_rank": [
+    [
+      "Age",
+      0.79933448919981
+    ],
+    [
+      "GenHlth",
+      0.557901675488893
+    ],
+    [
+      "Sex",
+      0.41903332429959106
+    ],
+    [
+      "Stroke",
+      0.33366984593426086
+    ],
+    [
+      "HighChol",
+      0.3325628398894361
+    ],
+    [
+      "HighBP",
+      0.2720430702960697
+    ],
+    [
+      "Smoker",
+      0.18600264239130038
+    ],
+    [
+      "Income",
+      0.1401765597590458
+    ],
+    [
+      "DiffWalk",
+      0.13888809882863257
+    ],
+    [
+      "Diabetes",
+      0.11849674798310147
+    ],
+    [
+      "CholCheck",
+      0.10027303550081586
+    ],
+    [
+      "NoDocbcCost",
+      0.08301880952572613
+    ],
+    [
+      "HvyAlcoholConsump",
+      0.068487618036543
+    ],
+    [
+      "PhysHlth",
+      0.051779712372548095
+    ],
+    [
+      "MentHlth",
+      0.04744342024406435
+    ],
+    [
+      "AnyHealthcare",
+      0.029929119025584632
+    ],
+    [
+      "Veggies",
+      0.02309560273305654
+    ],
+    [
+      "BMI",
+      0.021913999450329992
+    ],
+    [
+      "PhysActivity",
+      0.020385098654372116
+    ],
+    [
+      "Fruits",
+      0.01486268652281406
+    ],
+    [
+      "Education",
+      0.013055511726757124
+    ]
+  ]
+}

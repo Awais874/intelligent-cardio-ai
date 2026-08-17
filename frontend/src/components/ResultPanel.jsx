@@ -1,125 +1,97 @@
-import { HeartPulse, ShieldCheck } from "lucide-react";
-import KeyConcerns from "./keyConcerns";
+import { RadialBar, RadialBarChart, PolarAngleAxis } from "recharts";
+import { HeartPulse, Info } from "lucide-react";
+import ContributingFactors from "./ContributingFactors";
 
+const RISK_STYLES = {
+  Low: { text: "text-risk-low", bg: "bg-risk-low-bg", badge: "bg-risk-low-bg text-risk-low" },
+  Moderate: { text: "text-risk-moderate", bg: "bg-risk-moderate-bg", badge: "bg-risk-moderate-bg text-risk-moderate" },
+  High: { text: "text-risk-high", bg: "bg-risk-high-bg", badge: "bg-risk-high-bg text-risk-high" },
+};
 
+function RiskGauge({ percent, colorVar }) {
+  const data = [{ value: percent, fill: colorVar }];
+  return (
+    <div className="relative mx-auto h-40 w-40">
+      <RadialBarChart
+        width={160}
+        height={160}
+        cx="50%"
+        cy="50%"
+        innerRadius="72%"
+        outerRadius="100%"
+        barSize={12}
+        data={data}
+        startAngle={90}
+        endAngle={-270}
+      >
+        <PolarAngleAxis type="number" domain={[0, 100]} tick={false} axisLine={false} />
+        <RadialBar background={{ fill: "#e7e2d8" }} dataKey="value" cornerRadius={8} />
+      </RadialBarChart>
+      <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
+        <span className="font-display text-3xl text-ink-900">{percent}%</span>
+        <span className="text-[11px] text-ink-500">estimated risk</span>
+      </div>
+    </div>
+  );
+}
 
-
-export default function ResultPanel({ result, formData }) {
-  const riskStyles =
-    result?.risk_level === "High"
-      ? {
-          card: "bg-rose-50",
-          text: "text-rose-600",
-          badge: "bg-rose-100 text-rose-700",
-        }
-      : result?.risk_level === "Moderate"
-      ? {
-          card: "bg-amber-50",
-          text: "text-amber-600",
-          badge: "bg-amber-100 text-amber-700",
-        }
-      : {
-          card: "bg-emerald-50",
-          text: "text-emerald-600",
-          badge: "bg-emerald-100 text-emerald-700",
-        };
-
-
-
+export default function ResultPanel({ result }) {
+  const styles = RISK_STYLES[result?.risk_level] ?? RISK_STYLES.Low;
+  const colorVar =
+    result?.risk_level === "High" ? "#b3352c" : result?.risk_level === "Moderate" ? "#b4790a" : "#2f7a4f";
 
   return (
     <aside className="space-y-6">
-      
-      <div className="relative overflow-hidden rounded-[28px] bg-linear-to-br from-teal-600 via-cyan-600 to-blue-700 p-8 text-white shadow-xl">
-
-        <div className="pointer-events-none absolute -right-6 -top-6 opacity-20">
-          <HeartPulse className="h-40 w-40 text-white" />
+      <div className="rounded-2xl border border-border bg-surface p-6 sm:p-8">
+        <div className="flex items-center gap-3">
+          <div className="rounded-xl bg-brand-50 p-2.5">
+            <HeartPulse className="h-5 w-5 text-brand-700" />
+          </div>
+          <div>
+            <h3 className="font-display text-xl text-ink-900">CardioSense</h3>
+            <p className="text-xs text-ink-500">Lifestyle-based risk screening</p>
+          </div>
         </div>
-
-        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-teal-100">
-          AI-Powered Health Intelligence
-        </p>
-
-        <h3 className="mt-4 text-3xl font-bold leading-tight">
-          Intelligent Heart Risk Prediction
-        </h3>
-
-        <p className="mt-4 leading-7 text-cyan-50">
-          This system uses machine learning to analyze patient data and estimate
-          heart disease risk, helping identify potential concerns early. It turns
-          clinical indicators into clear, structured insights for smarter
-          screening and better health awareness.
+        <p className="mt-4 text-sm leading-6 text-ink-500">
+          Trained on CDC BRFSS survey data (behavioral and health-history indicators, not lab
+          results or ECG readings). Meant to prompt a conversation with a clinician, not replace one.
         </p>
       </div>
 
-
-
-
-      
       {result ? (
-        <div className="rounded-[28px] bg-white p-8 shadow-xl ring-1 ring-indigo-100">
+        <div className="rounded-2xl border border-border bg-surface p-6 sm:p-8">
           <div className="flex items-center justify-between gap-4">
-            <div className="flex items-center gap-3">
-              <div className="rounded-2xl bg-indigo-100 p-2">
-                <HeartPulse className="h-5 w-5 text-indigo-600" />
-              </div>
-              <h3 className="text-2xl font-bold text-slate-900">Result</h3>
-            </div>
-
-            <span className={`rounded-full px-3 py-1 text-sm font-medium ${riskStyles.badge}`}>
-              {result.risk_level} Risk
+            <h3 className="text-sm font-semibold uppercase tracking-wide text-ink-500">Your result</h3>
+            <span className={`rounded-full px-3 py-1 text-xs font-semibold ${styles.badge}`}>
+              {result.risk_level} risk
             </span>
           </div>
 
-          <div className="mt-6 space-y-4">
-            <div className="rounded-2xl bg-slate-50 p-5">
-              <p className="text-sm text-slate-500">Prediction</p>
-              <h4 className="mt-2 text-2xl font-bold text-slate-900">
-                {result.prediction === 1
-                  ? "Potential Risk Detected"
-                  : "No Strong Risk Signal"}
-              </h4>
-            </div>
-
-            <div className={`rounded-2xl p-5 ${riskStyles.card}`}>
-              <p className="text-sm text-slate-500">Estimated Risk</p>
-              <h4 className={`mt-2 text-4xl font-bold ${riskStyles.text}`}>
-                {result.risk_percent}%
-              </h4>
-            </div>
-
-
-
-            <div className="rounded-2xl bg-slate-50 p-5">
-              <div className="flex items-center gap-2">
-                <ShieldCheck className="h-4 w-4 text-indigo-500" />
-                <p className="text-sm text-slate-500">Clinical Note</p>
-              </div>
-              <p className="mt-2 leading-7 text-slate-700">{result.message}</p>
-            </div>
+          <div className="mt-6">
+            <RiskGauge percent={result.risk_percent} colorVar={colorVar} />
           </div>
 
-          <KeyConcerns formData={formData} />
-        </div>
-      ) : (
-        <div className="rounded-[28px] bg-white p-8 shadow-xl ring-1 ring-indigo-100">
-          <h3 className="text-2xl font-bold text-slate-900">Result Panel</h3>
-          <p className="mt-3 text-slate-500">
-            Submit the assessment form to view estimated risk, category, and
-            screening guidance.
+          <p className="mt-6 text-center font-display text-lg text-ink-900">
+            {result.prediction === 1 ? "Risk indicators present" : "No strong risk signal"}
           </p>
 
-          <div className="mt-6 space-y-4">
-            <div className="rounded-2xl bg-indigo-50 p-5">
-              <p className="text-sm text-slate-500">Estimated Risk</p>
-              <h4 className="mt-2 text-3xl font-bold text-indigo-300">--%</h4>
-            </div>
-
-            <div className="rounded-2xl bg-indigo-50 p-5">
-              <p className="text-sm text-slate-500">Risk Level</p>
-              <h4 className="mt-2 text-2xl font-bold text-indigo-300">Waiting</h4>
-            </div>
+          <div className="mt-4 flex items-start gap-2 rounded-xl bg-paper p-3.5">
+            <Info className="mt-0.5 h-3.5 w-3.5 shrink-0 text-ink-500" />
+            <p className="text-xs leading-5 text-ink-500">{result.message}</p>
           </div>
+
+          <ContributingFactors factors={result.contributing_factors} />
+        </div>
+      ) : (
+        <div className="rounded-2xl border border-dashed border-border bg-surface p-6 sm:p-8 text-center">
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-paper">
+            <HeartPulse className="h-5 w-5 text-ink-300" />
+          </div>
+          <h3 className="mt-4 font-display text-lg text-ink-900">Your result will appear here</h3>
+          <p className="mt-2 text-sm leading-6 text-ink-500">
+            Complete the four sections to generate a risk estimate and see which factors are
+            driving it.
+          </p>
         </div>
       )}
     </aside>

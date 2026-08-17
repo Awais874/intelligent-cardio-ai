@@ -1,178 +1,180 @@
 import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+
+const MotionStep = motion.div;
 import {
   Activity,
-  HeartPulse,
-  ShieldAlert,
-  Stethoscope,
+  AlertCircle,
   ChevronLeft,
   ChevronRight,
+  ShieldCheck,
 } from "lucide-react";
-import { initialState } from "../constants/formConfig";
+import { initialState, steps } from "../constants/formConfig";
 import { predictHeartRisk } from "../services/api";
 import StepOnePersonal from "./steps/StepOnePersonal";
-import StepTwoSymptoms from "./steps/StepTwoSymptoms";
-import StepThreeVitals from "./steps/StepThreeVitals";
+import StepTwoHealthHistory from "./steps/StepTwoHealthHistory";
+import StepThreeLifestyle from "./steps/StepThreeLifestyle";
+import StepFourWellbeing from "./steps/StepFourWellbeing";
 
-export default function AssessmentForm({ setResult, setSubmittedData }) {
+// Must stay index-aligned with `steps` in constants/formConfig.js.
+const STEP_COMPONENTS = [StepOnePersonal, StepTwoHealthHistory, StepThreeLifestyle, StepFourWellbeing];
+
+function validateStep(stepIndex, formData) {
+  const errors = {};
+  const step = steps[stepIndex];
+
+  for (const field of step.fields) {
+    if (formData[field] === "" || formData[field] === null || formData[field] === undefined) {
+      errors[field] = "This field is required.";
+    }
+  }
+
+  if (formData.BMI !== "" && (Number(formData.BMI) < 10 || Number(formData.BMI) > 100)) {
+    errors.BMI = "Enter a BMI between 10 and 100.";
+  }
+
+  return errors;
+}
+
+export default function AssessmentForm({ setResult }) {
   const [formData, setFormData] = useState(initialState);
   const [loading, setLoading] = useState(false);
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(0);
+  const [errors, setErrors] = useState({});
+  const [submitError, setSubmitError] = useState("");
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    if (value !== "" && Number(value) < 0) return;
+  const handleFieldChange = (name, value) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
+    setErrors((prev) => {
+      if (!prev[name]) return prev;
+      const next = { ...prev };
+      delete next[name];
+      return next;
+    });
   };
 
-  const handleNext = () => { if (step < 3) setStep(step + 1); };
-  const handlePrev = () => { if (step > 1) setStep(step - 1); };
+  const handleNext = () => {
+    const stepErrors = validateStep(step, formData);
+    if (Object.keys(stepErrors).length > 0) {
+      setErrors(stepErrors);
+      return;
+    }
+    setErrors({});
+    setStep((s) => Math.min(s + 1, steps.length - 1));
+  };
 
-  const validateForm = () => {
-    if (Number(formData.age) < 1 || Number(formData.age) > 120)
-      return "Age must be between 1 and 120.";
-    if (Number(formData.trestbps) < 80 || Number(formData.trestbps) > 250)
-      return "Resting blood pressure must be between 80 and 250.";
-    if (Number(formData.chol) < 100 || Number(formData.chol) > 600)
-      return "Cholesterol must be between 100 and 600.";
-    if (Number(formData.thalach) < 60 || Number(formData.thalach) > 220)
-      return "Max heart rate must be between 60 and 220.";
-    if (Number(formData.oldpeak) < 0 || Number(formData.oldpeak) > 10)
-      return "Oldpeak must be between 0 and 10.";
-    if (Number(formData.ca) < 0 || Number(formData.ca) > 4)
-      return "Number of major vessels must be between 0 and 4.";
-    return null;
+  const handlePrev = () => {
+    setErrors({});
+    setStep((s) => Math.max(s - 1, 0));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const error = validateForm();
-    if (error) { alert(error); return; }
+    setSubmitError("");
+
+    const stepErrors = validateStep(step, formData);
+    if (Object.keys(stepErrors).length > 0) {
+      setErrors(stepErrors);
+      return;
+    }
+
     setLoading(true);
     try {
-      setSubmittedData(formData);
       const data = await predictHeartRisk(formData);
       setResult(data);
     } catch (error) {
       console.error(error);
-      alert("Could not connect to backend or get prediction.");
+      setSubmitError("Could not reach the prediction service. Please try again in a moment.");
     } finally {
       setLoading(false);
     }
   };
 
+  const StepComponent = STEP_COMPONENTS[step];
+  const isLastStep = step === steps.length - 1;
+
   return (
-    <div className="rounded-[28px] bg-white p-8 shadow-xl ring-1 ring-sky-100">
-      {/* Header */}
-      <div className="flex items-center gap-3">
-        <div className="rounded-2xl bg-sky-100 p-3">
-          <HeartPulse className="h-6 w-6 text-sky-600" />
+    <div className="rounded-2xl border border-border bg-surface p-6 sm:p-8">
+      <div className="flex items-start gap-3">
+        <div className="rounded-xl bg-brand-50 p-2.5">
+          <Activity className="h-5 w-5 text-brand-700" />
         </div>
         <div>
-          <h2 className="text-3xl font-bold text-slate-900">
-            Heart Risk Assessment
-          </h2>
-          <p className="mt-1 text-slate-500">
-            Enter patient indicators to generate a screening estimate.
+          <h2 className="font-display text-2xl text-ink-900">Risk Assessment</h2>
+          <p className="mt-1 text-sm leading-relaxed text-ink-500">
+            21 questions about your health history, habits, and wellbeing. No lab results needed.
           </p>
         </div>
       </div>
 
-      {/* Info Cards */}
-      <div className="mt-8 grid gap-4 md:grid-cols-3">
-        <div className="rounded-2xl border border-sky-100 bg-sky-50 p-4">
-          <div className="flex items-center gap-2">
-            <Activity className="h-4 w-4 text-sky-500" />
-            <p className="text-sm font-medium text-slate-700">Clinical Inputs</p>
-          </div>
-          <p className="mt-2 text-sm text-slate-500">
-            Structured patient indicators used for risk estimation.
-          </p>
-        </div>
-
-        <div className="rounded-2xl border border-sky-100 bg-sky-50 p-4">
-          <div className="flex items-center gap-2">
-            <Stethoscope className="h-4 w-4 text-sky-500" />
-            <p className="text-sm font-medium text-slate-700">Screening Tool</p>
-          </div>
-          <p className="mt-2 text-sm text-slate-500">
-            Designed for educational and screening support purposes.
-          </p>
-        </div>
-
-        <div className="rounded-2xl border border-sky-100 bg-sky-50 p-4">
-          <div className="flex items-center gap-2">
-            <ShieldAlert className="h-4 w-4 text-sky-500" />
-            <p className="text-sm font-medium text-slate-700">Not Diagnosis</p>
-          </div>
-          <p className="mt-2 text-sm text-slate-500">
-            The result should not replace a clinician's medical judgment.
-          </p>
-        </div>
-      </div>
-
-      {/* Progress */}
       <div className="mt-8">
-        <div className="mb-3 flex items-center justify-between text-sm font-medium text-slate-600">
-          <span>Assessment Progress</span>
-          <span>Step {step} of 3</span>
+        <div className="mb-3 flex items-center justify-between text-xs font-medium uppercase tracking-wide text-ink-500">
+          <span>{steps[step].title}</span>
+          <span>{step + 1} / {steps.length}</span>
         </div>
 
-        <div className="h-2 w-full overflow-hidden rounded-full bg-sky-100">
-          <div
-            className="h-full rounded-full bg-sky-500 transition-all duration-300"
-            style={{ width: `${(step / 3) * 100}%` }}
-          />
-        </div>
-
-        <div className="mt-4 grid grid-cols-3 gap-3 text-center text-sm">
-          {["Personal", "Symptoms", "Vitals"].map((label, i) => (
+        <div className="flex gap-1.5">
+          {steps.map((s, i) => (
             <div
-              key={label}
-              className={`rounded-xl p-3 font-medium transition-colors ${
-                step >= i + 1
-                  ? "bg-sky-600 text-white shadow-sm"
-                  : "bg-slate-100 text-slate-400"
+              key={s.id}
+              className={`h-1 flex-1 rounded-full transition-colors ${
+                i <= step ? "bg-brand-600" : "bg-border"
               }`}
-            >
-              {label}
-            </div>
+            />
           ))}
         </div>
+
+        <p className="mt-3 text-sm text-ink-500">{steps[step].description}</p>
       </div>
 
-      {/* Form Steps */}
-      <form onSubmit={handleSubmit} className="mt-10 space-y-8">
-        {step === 1 && <StepOnePersonal formData={formData} handleChange={handleChange} />}
-        {step === 2 && <StepTwoSymptoms formData={formData} handleChange={handleChange} />}
-        {step === 3 && <StepThreeVitals formData={formData} handleChange={handleChange} />}
+      <form onSubmit={handleSubmit} className="mt-8">
+        <AnimatePresence mode="wait">
+          <MotionStep
+            key={step}
+            initial={{ opacity: 0, x: 12 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -12 }}
+            transition={{ duration: 0.18, ease: "easeOut" }}
+          >
+            <StepComponent formData={formData} onFieldChange={handleFieldChange} errors={errors} />
+          </MotionStep>
+        </AnimatePresence>
 
-        <div className="flex flex-col gap-3 border-t border-slate-100 pt-6 sm:flex-row sm:justify-between">
+        {submitError ? (
+          <div className="mt-6 flex items-start gap-2 rounded-lg border border-risk-high bg-risk-high-bg px-4 py-3 text-sm text-risk-high">
+            <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
+            {submitError}
+          </div>
+        ) : null}
+
+        <div className="mt-8 flex items-center justify-between border-t border-border pt-6">
           <button
             type="button"
             onClick={handlePrev}
-            disabled={step === 1}
-            className="inline-flex items-center justify-center gap-2 rounded-2xl border border-sky-200 bg-white px-5 py-3 font-medium text-sky-700 transition hover:bg-sky-50 disabled:cursor-not-allowed disabled:opacity-40"
+            disabled={step === 0}
+            className="inline-flex items-center gap-1.5 rounded-lg px-4 py-2.5 text-sm font-medium text-ink-700 transition hover:bg-paper disabled:cursor-not-allowed disabled:opacity-40"
           >
             <ChevronLeft className="h-4 w-4" />
-            Previous
+            Back
           </button>
 
-          {step < 3 ? (
+          {!isLastStep ? (
             <button
               type="button"
               onClick={handleNext}
-              className="inline-flex items-center justify-center gap-2 rounded-2xl bg-sky-500 px-5 py-3 font-semibold text-white shadow-md transition hover:bg-sky-600"
+              className="inline-flex items-center gap-1.5 rounded-lg bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-700"
             >
-              Next
+              Continue
               <ChevronRight className="h-4 w-4" />
             </button>
           ) : (
             <button
               type="submit"
               disabled={loading}
-              className="inline-flex items-center justify-center gap-2 rounded-2xl bg-sky-500 px-6 py-3 font-semibold text-white shadow-md transition hover:bg-sky-600 disabled:opacity-60"
+              className="inline-flex items-center gap-1.5 rounded-lg bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-700 disabled:opacity-60"
             >
-              {loading ? "Analyzing..." : "Generate Screening Result"}
+              <ShieldCheck className="h-4 w-4" />
+              {loading ? "Analyzing…" : "Get my result"}
             </button>
           )}
         </div>
