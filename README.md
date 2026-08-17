@@ -1,5 +1,5 @@
 # CardioSense 
-Live Link:  intelligent-cardio-ai.vercel.app
+Live Link: https://intelligent-cardio-ai.vercel.app/
 
 **CardioSense is an end-to-end machine learning cardiovascular risk screening application that I built from data preparation and model training to API development, frontend integration, testing, and deployment.**
 
